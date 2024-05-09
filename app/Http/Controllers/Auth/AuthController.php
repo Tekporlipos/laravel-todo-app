@@ -40,7 +40,7 @@ class AuthController extends Controller
         }
 
         if (!$user->email_verified_at) {
-            EmailVerificationController::verificationNotification($user);
+            (new EmailVerificationController)->verificationNotification($user);
             throw ValidationException::withMessages([
                 'email' => ['Account is not verified. Please check your email for verification instructions.'],
             ]);

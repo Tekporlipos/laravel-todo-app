@@ -26,7 +26,6 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::controller(EmailVerificationController::class)->group(function () {
-    Route::post("/verify-email", 'verificationNotification');
     Route::get('/verify-email/{token}/{email}', 'verify');
 });
 
@@ -49,11 +48,11 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::resource('faker/todos', FakeRestTApiController::class)->only([
-        'index', 'show', 'update', 'destroy'
+        'index', 'show', 'update', 'destroy' , 'store'
     ]);
 
 
     Route::resource('user/todos', TodoController::class)->only([
-        'index', 'show', 'update', 'destroy'
+        'index', 'show','store', 'update', 'destroy'
     ]);
 });

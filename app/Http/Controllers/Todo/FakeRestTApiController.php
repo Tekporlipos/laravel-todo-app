@@ -85,6 +85,26 @@ class FakeRestTApiController extends Controller
     }
 
     /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request): JsonResponse
+    {
+        $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'completed' => ['nullable', 'boolean'],
+        ]);
+        $newTodo = [
+            'title' => $request->input('title'),
+            'completed' => $request->input('completed'),
+        ];
+        $response = Http::post(self::FakerURL . "/todos", $newTodo);
+
+        return $response->successful()
+            ? success_response($response->json(), 'Fake todo created successfully',201)
+            : error_response([], 'Failed to update Todo item', $response->status());
+    }
+
+    /**
      * Fetches a todo item by its ID.
      */
     private function fetchTodoById(string $id): ?array

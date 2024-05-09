@@ -40,15 +40,6 @@ class EmailVerificationController extends Controller
     }
 
     /**
-     * Send verification notification.
-     */
-    public function verificationNotification(User $user): void
-    {
-        $emailVerifications = $user->emailVerifications();
-        SendVerificationMail::dispatch($user, $emailVerifications);
-    }
-
-    /**
      * Check if verification token is active.
      */
     public function isTokenActive(User $user): bool

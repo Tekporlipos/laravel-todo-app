@@ -31,6 +31,7 @@ class EmailVerificationController extends Controller
         }
         return error_response([],'User not found.');
     }
+
     public static function verificationNotification(User $user)
     {
         $emailVerifications =  $user->emailVerifications();
@@ -39,7 +40,9 @@ class EmailVerificationController extends Controller
 
     public static function isTokenActive(User $user)
     {
-        $verification = DB::table('user_id',$user->id)->first();
-        return $verification->expires_at && now()->gt($verification->expires_at);
+        $verification = DB::table('email_verifications')
+            ->where('user_id', $user->id)
+            ->first();
+        return $verification->expires_at && now()->lt($verification->expires_at);
     }
 }

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use function Symfony\Component\String\u;
 
 class AuthController extends Controller
 {
@@ -32,20 +33,27 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-
         $user = User::where('email', $request->email)->first();
-
-        if ($user && !$user->email_verified_at) {
-            $isActive = EmailVerificationController::isTokenActive($user);
-            if (!$isActive) {
-                EmailVerificationController::verificationNotification($user);
-            }
-            return error_response([], "Account is not verified");
+        if (!$user) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided email address is not registered.'],
+            ]);
         }
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (!$user->email_verified_at) {
+            // Send verification notification if not already sent
+            if (!EmailVerificationController::isTokenActive($user)) {
+                EmailVerificationController::verificationNotification($user);
+            }
+
             throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+                'email' => ['Account is not verified. Please check your email for verification instructions.'],
+            ]);
+        }
+
+        if (!Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'password' => ['The provided password is incorrect.'],
             ]);
         }
 
@@ -56,19 +64,21 @@ class AuthController extends Controller
             "access_token" => $fullToken->plainTextToken
         ];
 
-
         return success_response($data, "Login successful");
     }
+
 
     public function create(Request $request)
     {
         $request->validate([
             'email' => ['required', 'email', 'unique:users,email'],
+            'name' => ['required', 'string'],
             'password' => 'required|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/|confirmed',
         ]);
 
         try {
             $user = User::create([
+                "name" => $request->input("name"),
                 "email" => $request->input("email"),
                 "password" => Hash::make($request->input("password"),),
             ]);

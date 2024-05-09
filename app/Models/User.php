@@ -6,10 +6,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable,HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -44,4 +47,17 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function emailVerifications(): string
+    {
+        $verificationToken = Str::random(64);
+        DB::table('email_verifications')->insert([
+            'user_id' => $this->id,
+            'token' => $verificationToken,
+            'created_at' => now(),
+            'expires_at' => now()->addDay(),
+        ]);
+        return $verificationToken;
+    }
+
 }

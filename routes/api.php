@@ -21,7 +21,6 @@ use Illuminate\Support\Facades\Route;
 Route::controller(AuthController::class)->group(function () {
     Route::post("/login", 'login');
     Route::post("/register", 'create');
-    Route::post('/customer/support', 'contactSupport');
 });
 
 Route::controller(EmailVerificationController::class)->group(function () {
@@ -31,7 +30,7 @@ Route::controller(EmailVerificationController::class)->group(function () {
 
 Route::controller(PasswordResetController::class)->group(function () {
     Route::post("/password/email", 'passwordResetEmail');
-    Route::post('/password/reset', 'changePassword');
+    Route::post('/password/reset', 'changeResetPassword');
 });
 
 

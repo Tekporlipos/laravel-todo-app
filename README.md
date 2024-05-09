@@ -1,66 +1,76 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## ToDo App
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### Description
+The ToDo app is a task management application that provides a REST API backend built with PHP/Laravel. Users can register, login, manage their tasks, and more through the API endpoints. Additionally, the app integrates with a JSON Faker API to fetch and manage fake ToDo items.
 
-## About Laravel
+### Installation
+1. Clone the repository: `git clone <repository-url>`
+2. Navigate to the project directory: `cd todo-app`
+3. Install dependencies: `composer install`
+4. Configure environment variables:
+    - Rename `.env.example` to `.env`
+    - Update the `.env` file with your database and mail configuration
+5. Generate an application key: `php artisan key:generate`
+6. Run migrations: `php artisan migrate`
+7. Start the development server: `php artisan serve`
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### API Endpoints
+The following API endpoints are available:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+#### Authentication
+- `POST /api/login`: User login
+- `POST /api/register`: User registration
+- `POST /api/password/email`: Request password reset
+- `POST /api/password/reset`: Reset password
+- `POST /api/logout`: Logout user
+- `POST /api/logout-all-device`: Logout user from all devices
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+#### User Profile
+- `GET /api/user`: Retrieve user profile
+- `POST /api/user/change-password`: Change user password
 
-## Learning Laravel
+#### Email Verification
+- `POST /api/verify-email`: Send email verification notification
+- `GET /api/verify-email/{token}/{email}`: Verify email
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+#### ToDo Management
+_Faker request_
+- `GET /api/faker/todos`: Fetch all fake ToDo items
+- `GET /api/faker/todos/{id}`: Fetch a single fake ToDo item by ID
+- `PUT /api/faker/todos/{id}`: Update a fake ToDo item
+- `DELETE /api/faker/todos/{id}`: Delete a fake ToDo item
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+_Model request_
+- `GET /api/user/todos`: Fetch all user ToDo items
+- `GET /api/user/todos/{id}`: Fetch a single user ToDo item by ID
+- `PUT /api/user/todos/{id}`: Update a user ToDo item
+- `DELETE /api/user/todos/{id}`: Delete a user ToDo item
 
-## Laravel Sponsors
+### Usage
+- **Authentication**: Use the authentication endpoints to register, login, reset password, and manage user sessions.
+- **User Profile**: Access the user profile endpoints to retrieve and update user information.
+- **Email Verification**: Verify user email addresses using the email verification endpoints.
+- **ToDo Management**: Perform CRUD operations on ToDo items, including both fake ToDo items and user-specific ToDo items.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Environment Variables
+Ensure to configure the following environment variables in your `.env` file:
 
-### Premium Partners
+```plaintext
+# Example .env configuration
+APP_NAME=ToDo
+APP_ENV=local
+...
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Refer to the provided `.env.example` file for a complete list of environment variables and their descriptions.
 
-## Contributing
+### Testing
+Unit tests and PHP tests are provided to ensure the functionality and robustness of the API endpoints. Run tests using the following command:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+php artisan test
+```
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Additional Information
+For more details on how to use the application, interact with the API endpoints, and configure environment variables, please refer to the documentation provided in the codebase. This includes detailed explanations of each endpoint, usage examples, and instructions for configuring the environment.

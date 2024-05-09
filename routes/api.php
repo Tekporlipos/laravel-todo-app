@@ -3,6 +3,8 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\Todo\FakeRestTApiController;
+use App\Http\Controllers\Todo\TodoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,7 +43,17 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/user/change-password', 'changePassword');
         Route::post('/logout', 'logout');
         Route::post('/logout-all-device', 'logoutFromAllDevice');
+
         Route::get("/user", "user");
 
     });
+
+    Route::resource('faker/todos', FakeRestTApiController::class)->only([
+        'index', 'show', 'update', 'destroy'
+    ]);
+
+
+    Route::resource('user/todos', TodoController::class)->only([
+        'index', 'show', 'update', 'destroy'
+    ]);
 });

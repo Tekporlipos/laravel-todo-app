@@ -16,36 +16,263 @@ The ToDo app is a task management application that provides a REST API backend b
 
 ### API Endpoints
 The following API endpoints are available:
+Sure, here's a breakdown of all the endpoints and what they do:
 
-#### Authentication
-- `POST /api/login`: User login
-- `POST /api/register`: User registration
-- `POST /api/password/email`: Request password reset
-- `POST /api/password/reset`: Reset password
-- `POST /api/logout`: Logout user
-- `POST /api/logout-all-device`: Logout user from all devices
+### Authentication Endpoints
 
-#### User Profile
-- `GET /api/user`: Retrieve user profile
-- `POST /api/user/change-password`: Change user password
+#### User Authentication
+- `POST /api/register`: Registers a new user.
+- `POST /api/login`: Logs in a user.
+- `POST /api/logout`: Logs out the authenticated user.
+- `POST /api/logout-all-device`: Logs out the authenticated user from all devices.
 
 #### Email Verification
-- `POST /api/verify-email`: Send email verification notification
-- `GET /api/verify-email/{token}/{email}`: Verify email
+- `POST /api/verify-email`: Sends email verification notification.
+- `GET /api/verify-email/{token}/{email}`: Verifies email using token and email.
 
-#### ToDo Management
-_Faker request_
-- `GET /api/faker/todos`: Fetch all fake ToDo items
-- `GET /api/faker/todos/{id}`: Fetch a single fake ToDo item by ID
-- `PUT /api/faker/todos/{id}`: Update a fake ToDo item
-- `DELETE /api/faker/todos/{id}`: Delete a fake ToDo item
+#### Password Reset
+- `POST /api/password/email`: Requests password reset email.
+- `POST /api/password/reset`: Resets user password.
+
+### User Profile Endpoints
+- `GET /api/user`: Retrieves user profile information.
+- `POST /api/user/change-password`: Changes user password.
+
+### ToDo Management Endpoints
+
+#### Fake ToDo Items
+- `GET /api/faker/todos`: Fetches all fake ToDo items.
+- `GET /api/faker/todos/{id}`: Fetches a single fake ToDo item by ID.
+- `PUT /api/faker/todos/{id}`: Updates a fake ToDo item by ID.
+- `DELETE /api/faker/todos/{id}`: Deletes a fake ToDo item by ID.
+
+#### User-Specific ToDo Items
+- `GET /api/user/todos`: Fetches all user-specific ToDo items.
+- `GET /api/user/todos/{id}`: Fetches a single user-specific ToDo item by ID.
+- `PUT /api/user/todos/{id}`: Updates a user-specific ToDo item by ID.
+- `DELETE /api/user/todos/{id}`: Deletes a user-specific ToDo item by ID.
 
 
-_Model request_
-- `GET /api/user/todos`: Fetch all user ToDo items
-- `GET /api/user/todos/{id}`: Fetch a single user ToDo item by ID
-- `PUT /api/user/todos/{id}`: Update a user ToDo item
-- `DELETE /api/user/todos/{id}`: Delete a user ToDo item
+### API Endpoints Detail
+
+#### Authentication
+
+- `POST /api/register`
+    - Request Data Type: JSON
+      ```json
+      {
+        "name": "string",
+        "email": "string",
+        "password": "string",
+        "password_confirmation": "string"
+      }
+      ```
+    - Response Type: JSON
+      ```json
+      {
+        "user": {
+          "id": "integer",
+          "name": "string",
+          "uuid": "string",
+          "email": "string",
+          "created_at": "string",
+          "updated_at": "string"
+        },
+        "access_token": "string"
+      }
+      ```
+
+- `POST /api/login`
+    - Request Data Type: JSON
+      ```json
+      {
+        "email": "string",
+        "password": "string"
+      }
+      ```
+    - Response Type: JSON
+      ```json
+      {
+        "user": {
+          "id": "integer",
+          "name": "string",
+          "uuid": "string",
+          "email": "string",
+          "created_at": "string",
+          "updated_at": "string"
+        },
+        "access_token": "string"
+      }
+      ```
+      
+#### User Profile
+- `GET /api/user`
+    - Response Type: JSON
+      ```json
+      {
+          "id": "integer",
+          "name": "string",
+          "uuid": "string",
+          "email": "string",
+          "created_at": "string",
+          "updated_at": "string"
+        }
+      ```
+
+- `POST /api/user/change-password`
+    - Request Data Type: JSON
+      ```json
+      {
+        "current_password": "string",
+        "password": "string",
+        "password_confirmation": "string"
+      }
+      ```
+    - Response Type: JSON
+      ```json
+      {
+        "message": "string",
+        "code": "integer"
+      }
+      ```
+
+#### Email Verification
+- `POST /api/verify-email`
+    - Request Data Type: JSON
+      ```json
+      {
+        "email": "string"
+      }
+      ```
+    - Response Type: JSON
+      ```json
+      {
+        "message": "string"
+      }
+      ```
+
+- `GET /api/verify-email/{token}/{email}`
+    - Response Type: JSON
+      ```json
+      {
+        "message": "string"
+      }
+      ```
+
+#### ToDo Management (Faker request)
+- `GET /api/faker/todos`
+    - Response Type: JSON Array of ToDo objects
+      ```json
+      [
+        {
+          "userId": "integer",
+          "id": "integer",
+          "title": "string",
+          "completed": "boolean"
+        }
+      ]
+      ```
+
+- `GET /api/faker/todos/{id}`
+    - Response Type: JSON
+      ```json
+      {
+        "userId": "integer",
+        "id": "integer",
+        "title": "string",
+        "completed": "boolean"
+      }
+      ```
+
+- `PUT /api/faker/todos/{id}`
+    - Request Data Type: JSON
+      ```json
+      {
+        "title": "string",
+        "completed": "boolean"
+      }
+      ```
+    - Response Type: JSON
+      ```json
+      {
+        "userId": "integer",
+        "id": "integer",
+        "title": "string",
+        "completed": "boolean"
+      }
+      ```
+
+- `DELETE /api/faker/todos/{id}`
+    - Response Type: JSON
+      ```json
+      {
+        "message": "string"
+      }
+      ```
+
+#### ToDo Management (_Model request_)
+- `GET /api/user/todos`
+    - Response Type: JSON Array of ToDo objects
+      ```json
+      [
+        {
+          "id": "integer",
+          "user_id": "integer",
+          "title": "string",
+          "completed": "boolean",
+          "created_at": "string",
+          "updated_at": "string"
+        }
+      ]
+      ```
+
+- `GET /api/user/todos/{id}`
+    - Response Type: JSON
+      ```json
+      {
+        "id": "integer",
+        "user_id": "integer",
+        "title": "string",
+        "completed": "boolean",
+        "created_at": "string",
+        "updated_at": "string"
+      }
+      ```
+
+- `PUT /api/user/todos/{id}`
+    - Request Data Type: JSON
+      ```json
+      {
+        "title": "string",
+        "completed": "boolean"
+      }
+      ```
+    - Response Type: JSON
+      ```json
+      {
+        "id": "integer",
+        "user_id": "integer",
+        "title": "string",
+        "completed": "boolean",
+        "created_at": "string",
+        "updated_at": "string"
+      }
+      ```
+
+- `DELETE /api/user/todos/{id}`
+    - Response Type: JSON
+      ```json
+      {
+        "message": "string"
+      }
+      ```
+
+These data types and response types should help clarify the structure of the API endpoints and the expected data.
+
+_These endpoints cover user authentication, email verification, password reset, user profile management, and ToDo 
+management functionalities. 
+Each endpoint serves a specific purpose in managing user accounts and tasks within the application.******~~_
+
 
 ### Usage
 - **Authentication**: Use the authentication endpoints to register, login, reset password, and manage user sessions.

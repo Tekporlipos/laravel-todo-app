@@ -51,7 +51,7 @@ class AuthControllerTest extends TestCase
             'password_confirmation' => $password,
         ]);
 
-        $response->assertStatus(200)
+        $response->assertStatus(201)
             ->assertJsonStructure(['data' => ['name', 'email']]);
     }
 

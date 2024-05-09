@@ -71,12 +71,12 @@ class AuthController extends Controller
                 'email' => $validatedData['email'],
                 'password' => Hash::make($validatedData['password']),
             ]);
-            EmailVerificationController::verificationNotification($user);
+            (new EmailVerificationController)->verificationNotification($user);
         } catch (\Exception $e) {
             return error_response([], $e->getMessage());
         }
 
-        return success_response($user, 'Account created successfully. Please check your email to verify.');
+        return success_response($user, 'Account created successfully. Please check your email to verify.', 201);
     }
 
     public function logout(Request $request): JsonResponse

@@ -39,6 +39,13 @@ class EmailVerificationController extends Controller
         return error_response([], 'User not found.');
     }
 
+
+    public static function verificationNotification(User $user): void
+    {
+        $emailVerifications =  $user->emailVerifications();
+        dispatch(new SendVerificationMail($user,$emailVerifications));
+    }
+
     /**
      * Check if verification token is active.
      */
